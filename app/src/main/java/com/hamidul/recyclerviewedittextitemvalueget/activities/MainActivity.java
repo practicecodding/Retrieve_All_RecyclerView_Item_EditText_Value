@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.hamidul.recyclerviewedittextitemvalueget.R;
 import com.hamidul.recyclerviewedittextitemvalueget.adapters.MyAdapter;
-import com.hamidul.recyclerviewedittextitemvalueget.model.OrderGS;
+import com.hamidul.recyclerviewedittextitemvalueget.model.Order;
 
 import java.util.ArrayList;
 
@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     public static Button button;
     MyAdapter myAdapter;
-    ArrayList<OrderGS> arrayList;
+    ArrayList<Order> arrayList;
     ItemTouchHelper itemTouchHelper;
     boolean notIsEmpty;
     Toast toast;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViw);
         button = findViewById(R.id.button);
 
-        getProduct();
+        getProducts();
 
         myAdapter = new MyAdapter(MainActivity.this,arrayList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                for (OrderGS item : arrayList){
+                for (Order item : arrayList){
                     if (!item.getEditTextValue().isEmpty()){
                         notIsEmpty = true;
                         break;
@@ -109,36 +109,40 @@ public class MainActivity extends AppCompatActivity {
 
     //==============================================================================================
 
-    private void getProduct(){
+    private void getProducts(){
         arrayList = new ArrayList<>();
-        arrayList.add(new OrderGS(1,"Corn Flakes 120gm pp",""));
-        arrayList.add(new OrderGS(2,"Corn Flakes 250gm pp",""));
-        arrayList.add(new OrderGS(3,"Corn Flakes 250gm",""));
-        arrayList.add(new OrderGS(4,"Corn Flakes 475gm",""));
-        arrayList.add(new OrderGS(5,"Corn Flakes 1.1kg",""));
-        arrayList.add(new OrderGS(6,"Cocos 127gm",""));
-        arrayList.add(new OrderGS(7,"Cocos 250gm",""));
-        arrayList.add(new OrderGS(8,"Cocos 385gm",""));
-        arrayList.add(new OrderGS(9,"Cocos 700gm",""));
-        arrayList.add(new OrderGS(10,"Cocos 1100gm",""));
-        arrayList.add(new OrderGS(11,"Cocos Fills 250gm",""));
-        arrayList.add(new OrderGS(12,"Muesli Fruit & Nut 500gm",""));
-        arrayList.add(new OrderGS(13,"Muesli Fruit Magic 500gm",""));
-        arrayList.add(new OrderGS(14,"Muesli Nut Delight 500gm",""));
-        arrayList.add(new OrderGS(15,"Muesli No Added Sugar 500gm",""));
-        arrayList.add(new OrderGS(16,"Fruit Loops 285gm",""));
-        arrayList.add(new OrderGS(17,"Cocos Webs 300gm",""));
-        arrayList.add(new OrderGS(18,"Special K 455gm",""));
-        arrayList.add(new OrderGS(19,"Oats 400gm",""));
-        arrayList.add(new OrderGS(20,"Oats 900gm",""));
-        arrayList.add(new OrderGS(21,"Pringles Original 134gm",""));
-        arrayList.add(new OrderGS(22,"Pringles Sour Cream Onion 134gm",""));
-        arrayList.add(new OrderGS(23,"Pringles BBQ 134gm",""));
-        arrayList.add(new OrderGS(24,"Pringles Hot & Spicy 134gm",""));
-        arrayList.add(new OrderGS(25,"Pringles Cheesy Cheese 134gm",""));
-        arrayList.add(new OrderGS(26,"Pringles Cheesy Cheese 42gm",""));
-        arrayList.add(new OrderGS(27,"Pringles Original 42gm",""));
-        arrayList.add(new OrderGS(28,"Pringles Sour Cream Onion 42gm",""));
+        arrayList.add(new Order(1,"Corn Flakes 120g pp","",150));
+        arrayList.add(new Order(2,"Corn Flakes 250g pp","",250));
+        arrayList.add(new Order(3,"Corn Flakes 250g","",360));
+        arrayList.add(new Order(4,"Corn Flakes 475g","",620));
+        arrayList.add(new Order(5,"Corn Flakes 1.1kg","",1230));
+        arrayList.add(new Order(6,"Real Almond Honey Corn Flakes 345g","",550));
+        arrayList.add(new Order(7,"Real Honey Corn Flakes 300g","",530));
+        arrayList.add(new Order(8,"Strawberry Corn Flakes 300g","",500));
+        arrayList.add(new Order(9,"Cocos 127g","",160));
+        arrayList.add(new Order(10,"Cocos 250g","",350));
+        arrayList.add(new Order(11,"Cocos 385g","",460));
+        arrayList.add(new Order(12,"Cocos 700g","",899));
+        arrayList.add(new Order(13,"Cocos 1100g","",1325));
+        arrayList.add(new Order(14,"Cocos Fills 250g","",499));
+        arrayList.add(new Order(15,"Muesli Fruit & Nut 500g","",999));
+        arrayList.add(new Order(16,"Muesli Fruit Magic 500g","",999));
+        arrayList.add(new Order(17,"Muesli Nut Delight 500g","",999));
+        arrayList.add(new Order(18,"Muesli No Added Sugar 500g","",999));
+        arrayList.add(new Order(19,"Fruit Loops 285g","",530));
+        arrayList.add(new Order(20,"Cocos Webs 300g","",500));
+        arrayList.add(new Order(21,"Special K 290g","",499));
+        arrayList.add(new Order(22,"Special K 455g","",700));
+        arrayList.add(new Order(23,"Oats 400g","",350));
+        arrayList.add(new Order(24,"Oats 900g","",699));
+        arrayList.add(new Order(25,"Pringles Original 134g","",350));
+        arrayList.add(new Order(26,"Pringles Sour Cream Onion 134g","",350));
+        arrayList.add(new Order(27,"Pringles BBQ 134g","",350));
+        arrayList.add(new Order(28,"Pringles Hot & Spicy 134g","",350));
+        arrayList.add(new Order(29,"Pringles Cheesy Cheese 134g","",350));
+        arrayList.add(new Order(30,"Pringles Cheesy Cheese 42g","",150));
+        arrayList.add(new Order(31,"Pringles Original 42g","",150));
+        arrayList.add(new Order(32,"Pringles Sour Cream Onion 42g","",150));
     }
 
     //==============================================================================================

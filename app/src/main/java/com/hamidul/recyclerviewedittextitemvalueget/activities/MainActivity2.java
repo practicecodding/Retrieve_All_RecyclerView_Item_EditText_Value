@@ -1,30 +1,26 @@
 package com.hamidul.recyclerviewedittextitemvalueget.activities;
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hamidul.recyclerviewedittextitemvalueget.R;
-import com.hamidul.recyclerviewedittextitemvalueget.model.OrderGS;
+import com.hamidul.recyclerviewedittextitemvalueget.model.Order;
 
 import java.util.ArrayList;
 
 public class MainActivity2 extends AppCompatActivity {
 
-    public static ArrayList<OrderGS> arrayList;
-    ArrayList<OrderGS> orders;
+    public static ArrayList<Order> arrayList;
+    ArrayList<Order> orders;
     RecyclerView recyclerView;
     MyAdapter myAdapter;
 
@@ -36,7 +32,7 @@ public class MainActivity2 extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViw);
 
         orders = new ArrayList<>();
-        for (OrderGS item : arrayList){
+        for (Order item : arrayList){
             if (!item.getEditTextValue().isEmpty()){
                 orders.add(item);
             }

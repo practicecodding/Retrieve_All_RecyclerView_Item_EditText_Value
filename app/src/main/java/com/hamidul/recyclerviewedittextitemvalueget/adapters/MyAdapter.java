@@ -2,7 +2,6 @@ package com.hamidul.recyclerviewedittextitemvalueget.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -12,23 +11,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hamidul.recyclerviewedittextitemvalueget.R;
 import com.hamidul.recyclerviewedittextitemvalueget.activities.MainActivity;
-import com.hamidul.recyclerviewedittextitemvalueget.activities.MainActivity2;
-import com.hamidul.recyclerviewedittextitemvalueget.model.OrderGS;
+import com.hamidul.recyclerviewedittextitemvalueget.model.Order;
 
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
 
-    ArrayList<OrderGS> arrayList;
+    ArrayList<Order> arrayList;
     Context context;
     OnItemClickListener onItemClickListener;
 
-    public MyAdapter(Context context, ArrayList<OrderGS> arrayList) {
+    public MyAdapter(Context context, ArrayList<Order> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
     }
@@ -88,7 +85,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
                 arrayList.get(position).setEditTextValue(charSequence.toString());
                 /**MainActivity2.arrayList = arrayList;*/
 
-                for (OrderGS item : arrayList){
+                for (Order item : arrayList){
                     if (!item.getEditTextValue().isEmpty()){
                         MainActivity.button.setEnabled(true);
                         break;
