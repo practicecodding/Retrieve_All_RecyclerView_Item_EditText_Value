@@ -38,6 +38,13 @@ public class MainActivity2 extends AppCompatActivity {
             }
         }
 
+        if (orders.size()>1){
+            getSupportActionBar().setTitle("Your Order ( "+orders.size()+" SKU's )");
+        }
+        else {
+            getSupportActionBar().setTitle("Your Order ( "+orders.size()+" SKU )");
+        }
+
         myAdapter = new MyAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());

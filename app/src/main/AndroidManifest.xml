@@ -15,7 +15,6 @@
         <activity
             android:name=".activities.MainActivity2"
             android:exported="false"
-            android:label="Order Summery"
             android:theme="@style/Base.Theme.RecyclerViewEditTextItemValueGet.Actionbar"
             />
         <activity
