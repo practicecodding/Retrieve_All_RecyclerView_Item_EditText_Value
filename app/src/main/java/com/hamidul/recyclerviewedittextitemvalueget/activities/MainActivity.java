@@ -30,9 +30,6 @@ public class MainActivity extends AppCompatActivity {
     boolean notIsEmpty;
     Toast toast;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
