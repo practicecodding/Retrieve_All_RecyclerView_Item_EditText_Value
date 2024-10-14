@@ -125,7 +125,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
             productName = itemView.findViewById(R.id.productName);
             edUnit = itemView.findViewById(R.id.edUnit);
 
-            /*itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            /**itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     new AlertDialog.Builder(context)

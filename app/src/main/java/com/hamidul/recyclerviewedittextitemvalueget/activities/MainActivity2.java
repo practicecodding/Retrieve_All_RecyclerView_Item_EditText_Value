@@ -27,7 +27,6 @@ public class MainActivity2 extends AppCompatActivity {
     ArrayList<OrderGS> orders;
     RecyclerView recyclerView;
     MyAdapter myAdapter;
-    TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
