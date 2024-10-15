@@ -3,13 +3,16 @@ package com.hamidul.recyclerviewedittextitemvalueget.model;
 public class Order {
 
     int id;
-    String name,editTextValue;
+    String name,quantity;
+    double tp,discount;
     int price;
 
-    public Order(int id, String name, String editTextValue, int price) {
+    public Order(int id, String name, String quantity, double tp, double discount, int price) {
         this.id = id;
         this.name = name;
-        this.editTextValue = editTextValue;
+        this.quantity = quantity;
+        this.tp = tp;
+        this.discount = discount;
         this.price = price;
     }
 
@@ -29,12 +32,28 @@ public class Order {
         this.name = name;
     }
 
-    public String getEditTextValue() {
-        return editTextValue;
+    public String getQuantity() {
+        return quantity;
     }
 
-    public void setEditTextValue(String editTextValue) {
-        this.editTextValue = editTextValue;
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTp() {
+        return tp;
+    }
+
+    public void setTp(double tp) {
+        this.tp = tp;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 
     public int getPrice() {
@@ -44,5 +63,4 @@ public class Order {
     public void setPrice(int price) {
         this.price = price;
     }
-
 }

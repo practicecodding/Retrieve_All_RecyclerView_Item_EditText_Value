@@ -72,7 +72,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
             holder.edUnit.removeTextChangedListener((TextWatcher) holder.edUnit.getTag());
         }
 
-        holder.edUnit.setText(arrayList.get(position).getEditTextValue());
+        holder.edUnit.setText(arrayList.get(position).getQuantity());
 
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -82,11 +82,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                arrayList.get(position).setEditTextValue(charSequence.toString());
+                arrayList.get(position).setQuantity(charSequence.toString());
                 /**MainActivity2.arrayList = arrayList;*/
 
                 for (Order item : arrayList){
-                    if (!item.getEditTextValue().isEmpty()){
+                    if (!item.getQuantity().isEmpty()){
                         MainActivity.button.setEnabled(true);
                         break;
                     }

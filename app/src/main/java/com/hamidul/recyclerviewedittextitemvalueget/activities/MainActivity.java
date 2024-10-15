@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 for (Order item : arrayList){
-                    if (!item.getEditTextValue().isEmpty()){
+                    if (!item.getQuantity().isEmpty()){
                         notIsEmpty = true;
                         break;
                     }
@@ -111,38 +111,40 @@ public class MainActivity extends AppCompatActivity {
 
     private void getProducts(){
         arrayList = new ArrayList<>();
-        arrayList.add(new Order(1,"Corn Flakes 120g pp","",150));
-        arrayList.add(new Order(2,"Corn Flakes 250g pp","",250));
-        arrayList.add(new Order(3,"Corn Flakes 250g","",360));
-        arrayList.add(new Order(4,"Corn Flakes 475g","",620));
-        arrayList.add(new Order(5,"Corn Flakes 1.1kg","",1230));
-        arrayList.add(new Order(6,"Real Almond Honey Corn Flakes 345g","",550));
-        arrayList.add(new Order(7,"Real Honey Corn Flakes 300g","",530));
-        arrayList.add(new Order(8,"Strawberry Corn Flakes 300g","",500));
-        arrayList.add(new Order(9,"Cocos 127g","",160));
-        arrayList.add(new Order(10,"Cocos 250g","",350));
-        arrayList.add(new Order(11,"Cocos 385g","",460));
-        arrayList.add(new Order(12,"Cocos 700g","",899));
-        arrayList.add(new Order(13,"Cocos 1100g","",1325));
-        arrayList.add(new Order(14,"Cocos Fills 250g","",499));
-        arrayList.add(new Order(15,"Muesli Fruit & Nut 500g","",999));
-        arrayList.add(new Order(16,"Muesli Fruit Magic 500g","",999));
-        arrayList.add(new Order(17,"Muesli Nut Delight 500g","",999));
-        arrayList.add(new Order(18,"Muesli No Added Sugar 500g","",999));
-        arrayList.add(new Order(19,"Fruit Loops 285g","",530));
-        arrayList.add(new Order(20,"Cocos Webs 300g","",500));
-        arrayList.add(new Order(21,"Special K 290g","",499));
-        arrayList.add(new Order(22,"Special K 455g","",700));
-        arrayList.add(new Order(23,"Oats 400g","",350));
-        arrayList.add(new Order(24,"Oats 900g","",699));
-        arrayList.add(new Order(25,"Pringles Original 134g","",350));
-        arrayList.add(new Order(26,"Pringles Sour Cream Onion 134g","",350));
-        arrayList.add(new Order(27,"Pringles BBQ 134g","",350));
-        arrayList.add(new Order(28,"Pringles Hot & Spicy 134g","",350));
-        arrayList.add(new Order(29,"Pringles Cheesy Cheese 134g","",350));
-        arrayList.add(new Order(30,"Pringles Cheesy Cheese 42g","",150));
-        arrayList.add(new Order(31,"Pringles Original 42g","",150));
-        arrayList.add(new Order(32,"Pringles Sour Cream Onion 42g","",150));
+        arrayList.add(new Order(1,"Corn Flakes 120g pp","",131,0,150));
+        arrayList.add(new Order(2,"Corn Flakes 250g pp","",220,0,250));
+        arrayList.add(new Order(3,"Corn Flakes 250g","",315,0,360));
+        arrayList.add(new Order(4,"Corn Flakes 475g","",540,0,620));
+        arrayList.add(new Order(5,"Corn Flakes 1.1kg","",1070,0,1230));
+        arrayList.add(new Order(6,"Real Almond Honey Corn Flakes 345g","",480,0,550));
+        arrayList.add(new Order(7,"Real Honey Corn Flakes 300g","",461,0,530));
+        arrayList.add(new Order(8,"Strawberry Corn Flakes 300g","",435,0,500));
+        arrayList.add(new Order(9,"Cocos 127g","",140,0,160));
+        arrayList.add(new Order(10,"Cocos 250g","",305,0,350));
+        arrayList.add(new Order(11,"Cocos 385g","",400,0,460));
+        arrayList.add(new Order(12,"Cocos 700g","",785,0,899));
+        arrayList.add(new Order(13,"Cocos 1100g","",1155,0,1325));
+        arrayList.add(new Order(14,"Cocos 22g","",17.50,0,20));
+        arrayList.add(new Order(15,"Cocos Moon & Star 22g","",17.50,0,20));
+        arrayList.add(new Order(16,"Cocos Fills 250g","",435,0,499));
+        arrayList.add(new Order(17,"Muesli Fruit & Nut 500g","",870,0,999));
+        arrayList.add(new Order(18,"Muesli Fruit Magic 500g","",870,0,999));
+        arrayList.add(new Order(19,"Muesli Nut Delight 500g","",870,0,999));
+        arrayList.add(new Order(20,"Muesli No Added Sugar 500g","",870,0,999));
+        arrayList.add(new Order(21,"Fruit Loops 285g","",461,0,530));
+        arrayList.add(new Order(22,"Cocos Webs 300g","",435,0,500));
+        arrayList.add(new Order(23,"Special K 290g","",435,0,499));
+        arrayList.add(new Order(24,"Special K 455g","",610,0,700));
+        arrayList.add(new Order(25,"Oats 400g","",305,0,350));
+        arrayList.add(new Order(26,"Oats 900g","",610,0,699));
+        arrayList.add(new Order(27,"Pringles Original 134g","",313,0,350));
+        arrayList.add(new Order(28,"Pringles Sour Cream Onion 134g","",313,0,350));
+        arrayList.add(new Order(29,"Pringles BBQ 134g","",313,0,350));
+        arrayList.add(new Order(30,"Pringles Hot & Spicy 134g","",313,0,350));
+        arrayList.add(new Order(31,"Pringles Cheesy Cheese 134g","",313,0,350));
+        arrayList.add(new Order(32,"Pringles Original 42g","",135,0,150));
+        arrayList.add(new Order(33,"Pringles Sour Cream Onion 42g","",135,0,150));
+        arrayList.add(new Order(34,"Pringles Cheesy Cheese 42g","",135,0,150));
     }
 
     //==============================================================================================
