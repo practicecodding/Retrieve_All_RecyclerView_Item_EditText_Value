@@ -93,8 +93,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
                     }
                     else {
                         MainActivity.button.setEnabled(false);
-                        MainActivity.button.setVisibility(View.GONE);
-                    }
+                        MainActivity.button.setVisibility(View.GONE);}
                 }
 
             }

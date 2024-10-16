@@ -42,18 +42,12 @@ public class MainActivity extends AppCompatActivity {
 
         getProducts();
 
-        myAdapter = new MyAdapter(MainActivity.this,arrayList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        /*recyclerView.setHasFixedSize(true);*/
-        recyclerView.setAdapter(myAdapter);
-        myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+        getSupportActionBar().getCustomView().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onItemClick(int position) {
-                arrayList.remove(position);
-                myAdapter.notifyItemRemoved(position);
+            public boolean onLongClick(View v) {
+                getProducts();
+                button.setVisibility(View.GONE);
+                return false;
             }
         });
 
@@ -146,6 +140,22 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add(new Order(33,"Pringles Original 42g","",135,0,150));
         arrayList.add(new Order(34,"Pringles Sour Cream Onion 42g","",135,0,150));
         arrayList.add(new Order(35,"Pringles Cheesy Cheese 42g","",135,0,150));
+
+        myAdapter = new MyAdapter(MainActivity.this,arrayList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        /*recyclerView.setHasFixedSize(true);*/
+        recyclerView.setAdapter(myAdapter);
+        myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                arrayList.remove(position);
+                myAdapter.notifyItemRemoved(position);
+            }
+        });
+
     }
 
     //==============================================================================================

@@ -31,7 +31,7 @@ public class MainActivity2 extends AppCompatActivity {
     RecyclerView recyclerView;
     MyAdapter myAdapter;
     LinearLayout totalAmountLayout, discountAmountLayout, netAmountLayout;
-    TextView tvTotalAmount, tvDiscountAmount, tvNetAmount;
+    TextView tvTotalAmount, tvDiscountAmount, tvNetAmount, tvNetAmountName;
     double sum;
 
     @Override
@@ -46,6 +46,7 @@ public class MainActivity2 extends AppCompatActivity {
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
         tvDiscountAmount = findViewById(R.id.tvDiscountAmount);
         tvNetAmount = findViewById(R.id.tvNetAmount);
+        tvNetAmountName = findViewById(R.id.tvNetAmountName);
 
         orders = new ArrayList<>();
         for (Order item : arrayList){
@@ -71,12 +72,12 @@ public class MainActivity2 extends AppCompatActivity {
 
         tvTotalAmount.setText(String.format("%.2f",sum));
 
-        totalAmountLayout.setOnLongClickListener(new View.OnLongClickListener() {
+        netAmountLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
                 discountAmountLayout.setVisibility(View.GONE);
-                netAmountLayout.setVisibility(View.GONE);
+                totalAmountLayout.setVisibility(View.GONE);
 
                 View view = LayoutInflater.from(MainActivity2.this).inflate(R.layout.price_dialog,null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
@@ -99,8 +100,8 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                         double totalTp = sum/1.15;
                         double totalDp = totalTp/1.05;
-                        tvTotalAmount.setText(String.format("%.2f",totalDp));
-
+                        tvNetAmount.setText(String.format("%.2f",totalDp));
+                        tvNetAmountName.setText("Total Amount");
                         dialog.cancel();
                     }
                 });
@@ -116,8 +117,8 @@ public class MainActivity2 extends AppCompatActivity {
                             sum = sum + product;
                         }
                         double totalTp = sum/1.15;
-                        tvTotalAmount.setText(String.format("%.2f",totalTp));
-
+                        tvNetAmount.setText(String.format("%.2f",totalTp));
+                        tvNetAmountName.setText("Total Amount");
                         dialog.cancel();
                     }
                 });
