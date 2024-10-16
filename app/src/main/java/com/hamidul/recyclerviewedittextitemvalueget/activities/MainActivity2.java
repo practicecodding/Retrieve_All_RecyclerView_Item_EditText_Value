@@ -30,8 +30,8 @@ public class MainActivity2 extends AppCompatActivity {
     ArrayList<Order> orders;
     RecyclerView recyclerView;
     MyAdapter myAdapter;
-    LinearLayout linearLayout;
-    TextView tvSubtotal;
+    LinearLayout totalAmountLayout, discountAmountLayout, netAmountLayout;
+    TextView tvTotalAmount, tvDiscountAmount, tvNetAmount;
     double sum;
 
     @Override
@@ -40,8 +40,12 @@ public class MainActivity2 extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         setContentView(R.layout.activity_main2);
         recyclerView = findViewById(R.id.recyclerViw);
-        tvSubtotal = findViewById(R.id.tvSubtotal);
-        linearLayout = findViewById(R.id.linearLayout);
+        totalAmountLayout = findViewById(R.id.totalAmountLayout);
+        discountAmountLayout = findViewById(R.id.discountAmountLayout);
+        netAmountLayout = findViewById(R.id.netAmountLayout);
+        tvTotalAmount = findViewById(R.id.tvTotalAmount);
+        tvDiscountAmount = findViewById(R.id.tvDiscountAmount);
+        tvNetAmount = findViewById(R.id.tvNetAmount);
 
         orders = new ArrayList<>();
         for (Order item : arrayList){
@@ -65,11 +69,15 @@ public class MainActivity2 extends AppCompatActivity {
             sum = sum + product;
         }
 
-        tvSubtotal.setText(String.format("BDT %.2f",sum));
+        tvTotalAmount.setText(String.format("%.2f",sum));
 
-        linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+        totalAmountLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+
+                discountAmountLayout.setVisibility(View.GONE);
+                netAmountLayout.setVisibility(View.GONE);
+
                 View view = LayoutInflater.from(MainActivity2.this).inflate(R.layout.price_dialog,null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
                 builder.setView(view);
@@ -91,7 +99,7 @@ public class MainActivity2 extends AppCompatActivity {
                         }
                         double totalTp = sum/1.15;
                         double totalDp = totalTp/1.05;
-                        tvSubtotal.setText(String.format("BDT %.2f",totalDp));
+                        tvTotalAmount.setText(String.format("%.2f",totalDp));
 
                         dialog.cancel();
                     }
@@ -108,7 +116,7 @@ public class MainActivity2 extends AppCompatActivity {
                             sum = sum + product;
                         }
                         double totalTp = sum/1.15;
-                        tvSubtotal.setText(String.format("BDT %.2f",totalTp));
+                        tvTotalAmount.setText(String.format("%.2f",totalTp));
 
                         dialog.cancel();
                     }
@@ -117,16 +125,15 @@ public class MainActivity2 extends AppCompatActivity {
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
-
                 return false;
             }
         });
 
         myAdapter = new MyAdapter();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
+        /**DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());*/
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        /**recyclerView.addItemDecoration(dividerItemDecoration);*/
         recyclerView.setAdapter(myAdapter);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -144,9 +151,7 @@ public class MainActivity2 extends AppCompatActivity {
         @NonNull
         @Override
         public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
             LayoutInflater layoutInflater = getLayoutInflater();
-
             return new myViewHolder(layoutInflater.inflate(R.layout.item_order,parent,false));
         }
 

@@ -15,68 +15,154 @@
         android:layout_height="match_parent"
         >
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:padding="15dp"
-        android:background="#E6E4E4"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/totalAmountLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Subtotal"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:layout_marginLeft="5dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:weightSum="2"
+            android:layout_above="@id/discountAmountLayout"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total Amount"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/tvTotalAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5000.00"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="right"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/discountAmountLayout"
+            android:background="@color/black"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/discountAmountLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="(without taxes)"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:weightSum="2"
+            android:layout_above="@id/netAmountLayout"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Discount Amount"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/tvDiscountAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5000.00"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="right"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/netAmountLayout"
+            android:background="@color/black"
             />
 
-        <TextView
-            android:id="@+id/tvSubtotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TK 5000"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:textColor="#4CAF50"
-            android:gravity="right"
-            android:textSize="16sp"
-            android:layout_weight="1"
-            android:layout_marginRight="5dp"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/totalAmountLayout"
+            android:background="@color/black"
             />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/netAmountLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp"
+            android:weightSum="2"
+            >
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/linearLayout"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="10dp"
-        >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total Amount"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                />
+
+            <TextView
+                android:id="@+id/tvNetAmount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5000.00"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:gravity="right"
+                android:layout_gravity="center"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViw"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none"
+            android:layout_above="@id/totalAmountLayout"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             />
 
-    </androidx.cardview.widget.CardView>
 
     </RelativeLayout>
 

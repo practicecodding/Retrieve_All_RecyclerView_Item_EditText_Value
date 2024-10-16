@@ -88,10 +88,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
                 for (Order item : arrayList){
                     if (!item.getQuantity().isEmpty()){
                         MainActivity.button.setEnabled(true);
+                        MainActivity.button.setVisibility(View.VISIBLE);
                         break;
                     }
                     else {
                         MainActivity.button.setEnabled(false);
+                        MainActivity.button.setVisibility(View.GONE);
                     }
                 }
 
