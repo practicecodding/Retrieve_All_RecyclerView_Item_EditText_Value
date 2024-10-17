@@ -29,7 +29,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:lineSpacingExtra="5dp"
+                android:lineSpacingExtra="2dp"
                 />
 
             <EditText
