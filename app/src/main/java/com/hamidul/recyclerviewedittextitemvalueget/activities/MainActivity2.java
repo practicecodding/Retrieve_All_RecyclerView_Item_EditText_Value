@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +33,7 @@ public class MainActivity2 extends AppCompatActivity {
     MyAdapter myAdapter;
     LinearLayout totalAmountLayout, discountAmountLayout, netAmountLayout;
     TextView tvTotalAmount, tvDiscountAmount, tvNetAmount, tvNetAmountName;
-    double sum,sumKellogg,sumPringles;
+    double sum,sumKellogg,sumPringles,sumDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +63,7 @@ public class MainActivity2 extends AppCompatActivity {
             getSupportActionBar().setTitle("Your Order ( "+orders.size()+" SKU )");
         }
 
-        sum = 0;
-        for (int i=0; i<orders.size(); i++){
-            int quantity = Integer.parseInt(orders.get(i).getQuantity());
-            double tp = orders.get(i).getTp();
-            double product = quantity*tp;
-            sum = sum + product;
-        }
-        if (sum%1==0){
-            tvTotalAmount.setText(String.format("%.0f",sum));
-            tvNetAmount.setText(String.format("%.0f",sum));
-        }
-        else {
-            tvTotalAmount.setText(String.format("%.2f",sum));
-            tvNetAmount.setText(String.format("%.2f",sum));
-        }
+        upDatePrice();
 
         netAmountLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -198,7 +185,7 @@ public class MainActivity2 extends AppCompatActivity {
         public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
 
             holder.productName.setText(orders.get(position).getName());
-
+            holder.tvDiscount.setText(String.format("%.0f",orders.get(position).getDiscount()));
             if (orders.get(position).getTp()%1==0){
                 holder.multiply.setText( orders.get(position).getQuantity()+" * "+String.format("%.0f",orders.get(position).getTp()) );
             }
@@ -220,24 +207,70 @@ public class MainActivity2 extends AppCompatActivity {
         }
 
         public class myViewHolder extends RecyclerView.ViewHolder{
-            TextView productName,tvUnit,multiply;
+            TextView productName,tvUnit,multiply,tvDiscount;
             public myViewHolder(@NonNull View itemView) {
                 super(itemView);
                 productName = itemView.findViewById(R.id.productName);
                 tvUnit = itemView.findViewById(R.id.tvUnit);
                 multiply = itemView.findViewById(R.id.multiply);
+                tvDiscount = itemView.findViewById(R.id.tvDiscount);
 
-//                itemView.setOnLongClickListener(new View.OnLongClickListener() {
-//                    @Override
-//                    public boolean onLongClick(View v) {
-//
-//                        return false;
-//                    }
-//                });
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        View view = LayoutInflater.from(MainActivity2.this).inflate(R.layout.discount_dialog,null);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
+                        builder.setView(view);
+
+                        EditText edDiscount = view.findViewById(R.id.edDiscount);
+                        Button btnOk = view.findViewById(R.id.btnOk);
+
+                        final AlertDialog dialog = builder.create();
+
+                        edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition()).getDiscount()));
+
+                        btnOk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String discount = edDiscount.getText().toString();
+                                orders.get(getAdapterPosition()).setDiscount(Double.parseDouble(discount));
+                                notifyDataSetChanged();
+                                upDatePrice();
+                                dialog.cancel();
+                            }
+                        });
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        dialog.show();
+
+                        return false;
+                    }
+                });
 
             }
         }
 
+    }
+
+    void upDatePrice(){
+        sum = 0;
+        sumDiscount = 0;
+        for (int i=0; i<orders.size(); i++){
+            int quantity = Integer.parseInt(orders.get(i).getQuantity());
+            double discount = orders.get(i).getDiscount();
+            double tp = orders.get(i).getTp();
+            double product = quantity*tp;
+            sum = sum + product;
+            sumDiscount = sumDiscount+discount;
+        }
+        tvDiscountAmount.setText(String.format("%.0f",sumDiscount));
+        if (sum%1==0){
+            tvTotalAmount.setText(String.format("%.0f",sum));
+            tvNetAmount.setText(String.format("%.0f",sum-sumDiscount));
+        }
+        else {
+            tvTotalAmount.setText(String.format("%.2f",sum));
+            tvNetAmount.setText(String.format("%.2f",sum-sumDiscount));
+        }
     }
 
 }
