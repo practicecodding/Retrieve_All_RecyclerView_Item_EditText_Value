@@ -239,7 +239,9 @@ public class MainActivity2 extends AppCompatActivity {
                                 if (discount.isEmpty()){
                                     orders.get(getAdapterPosition()).setDiscount(0);
                                 }
-                                orders.get(getAdapterPosition()).setDiscount(Double.parseDouble(discount));
+                                else {
+                                    orders.get(getAdapterPosition()).setDiscount(Double.parseDouble(discount));
+                                }
                                 notifyDataSetChanged();
                                 upDatePrice();
                                 dialog.cancel();
