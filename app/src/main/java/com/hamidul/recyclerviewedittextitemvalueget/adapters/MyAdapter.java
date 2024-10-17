@@ -27,6 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
     ArrayList<Order> arrayList;
     Context context;
     OnItemClickListener onItemClickListener;
+    LinearLayoutManager layoutManager;
 
     public MyAdapter(Context context, ArrayList<Order> arrayList) {
         this.context = context;
@@ -85,6 +86,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                 arrayList.get(position).setQuantity(charSequence.toString());
                 /**MainActivity2.arrayList = arrayList;*/
 

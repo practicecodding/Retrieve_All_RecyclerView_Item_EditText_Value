@@ -1,6 +1,7 @@
 package com.hamidul.recyclerviewedittextitemvalueget.activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,7 @@ public class MainActivity2 extends AppCompatActivity {
     TextView tvTotalAmount, tvDiscountAmount, tvNetAmount, tvNetAmountName;
     double sum,sumKellogg,sumPringles,sumDiscount;
     Toast toast;
+    ItemTouchHelper itemTouchHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +166,8 @@ public class MainActivity2 extends AppCompatActivity {
         /**recyclerView.addItemDecoration(dividerItemDecoration);*/
         recyclerView.setAdapter(myAdapter);
 
+        swipe();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
@@ -284,9 +289,44 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     void setToast(String message){
-        if (message!=null) toast.cancel();
+        if (toast!=null) toast.cancel();
         toast = Toast.makeText(MainActivity2.this,message,Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    void swipe(){
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                /**arrayList.remove(viewHolder.getAdapterPosition());
+                 myAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());*/
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                //Toast.makeText(MainActivity2.this, orders.get(viewHolder.getAdapterPosition()).getName()+" Successfully Deleted", Toast.LENGTH_SHORT).show();
+                setToast(orders.get(viewHolder.getAdapterPosition()).getName()+" Successfully Deleted");
+                orders.get(viewHolder.getAdapterPosition()).setQuantity("");
+                orders.get(viewHolder.getAdapterPosition()).setDiscount(0);
+                orders.remove(viewHolder.getAdapterPosition());
+                upDatePrice();
+                myAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+
+                if (orders.isEmpty()){
+                    finish();
+                }
+                else if (orders.size()>1){
+                    getSupportActionBar().setTitle("Your Order ( "+orders.size()+" SKU's )");
+                }
+                else {
+                    getSupportActionBar().setTitle("Your Order ( "+orders.size()+" SKU )");
+                }
+
+            }
+        };
+        itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
 }

@@ -2,6 +2,7 @@ package com.hamidul.recyclerviewedittextitemvalueget.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     ItemTouchHelper itemTouchHelper;
     boolean notIsEmpty;
     Toast toast;
+    public static int firstVisiblePosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
         getProducts();
 
+        firstVisiblePosition = 0;
+
         getSupportActionBar().getCustomView().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -55,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    // Get the position of the first visible item
+                    firstVisiblePosition = layoutManager.findFirstVisibleItemPosition();
+                }
 
                 for (Order item : arrayList){
                     if (!item.getQuantity().isEmpty()){
@@ -93,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(MainActivity.this, arrayList.get(viewHolder.getAdapterPosition()).getName()+" Successfully Deleted", Toast.LENGTH_SHORT).show();
+                setToast(arrayList.get(viewHolder.getAdapterPosition()).getName()+" Successfully Deleted");
                 arrayList.remove(viewHolder.getAdapterPosition());
                 myAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
             }
@@ -167,6 +177,35 @@ public class MainActivity extends AppCompatActivity {
         if (toast!=null) toast.cancel();
         toast = Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    @Override
+    protected void onResume() {
+        myAdapter = new MyAdapter(MainActivity.this,arrayList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
+        recyclerView.setLayoutManager(linearLayoutManager);
+        if (recyclerView.getItemDecorationCount()<1){
+            recyclerView.addItemDecoration(dividerItemDecoration);
+        }
+        /*recyclerView.setHasFixedSize(true);*/
+        recyclerView.setAdapter(myAdapter);
+        recyclerView.scrollToPosition(firstVisiblePosition);
+        setButtonVisibility();
+        super.onResume();
+    }
+
+    void setButtonVisibility(){
+        for (Order item : arrayList){
+            if (!item.getQuantity().isEmpty()){
+                MainActivity.button.setEnabled(true);
+                MainActivity.button.setVisibility(View.VISIBLE);
+                break;
+            }
+            else {
+                MainActivity.button.setEnabled(false);
+                MainActivity.button.setVisibility(View.GONE);}
+        }
     }
 
 }
