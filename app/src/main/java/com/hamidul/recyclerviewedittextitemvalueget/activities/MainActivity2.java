@@ -34,6 +34,7 @@ public class MainActivity2 extends AppCompatActivity {
     LinearLayout totalAmountLayout, discountAmountLayout, netAmountLayout;
     TextView tvTotalAmount, tvDiscountAmount, tvNetAmount, tvNetAmountName;
     double sum,sumKellogg,sumPringles,sumDiscount;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,12 +228,17 @@ public class MainActivity2 extends AppCompatActivity {
 
                         final AlertDialog dialog = builder.create();
 
-                        edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition()).getDiscount()));
+                        if (orders.get(getAdapterPosition()).getDiscount()>0){
+                            edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition()).getDiscount()));
+                        }
 
                         btnOk.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 String discount = edDiscount.getText().toString();
+                                if (discount.isEmpty()){
+                                    orders.get(getAdapterPosition()).setDiscount(0);
+                                }
                                 orders.get(getAdapterPosition()).setDiscount(Double.parseDouble(discount));
                                 notifyDataSetChanged();
                                 upDatePrice();
@@ -271,6 +277,12 @@ public class MainActivity2 extends AppCompatActivity {
             tvTotalAmount.setText(String.format("%.2f",sum));
             tvNetAmount.setText(String.format("%.2f",sum-sumDiscount));
         }
+    }
+
+    void setToast(String message){
+        if (message!=null) toast.cancel();
+        toast = Toast.makeText(MainActivity2.this,message,Toast.LENGTH_LONG);
+        toast.show();
     }
 
 }
