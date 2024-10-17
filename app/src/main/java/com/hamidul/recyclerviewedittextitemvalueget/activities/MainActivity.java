@@ -3,6 +3,7 @@ package com.hamidul.recyclerviewedittextitemvalueget.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onLongClick(View v) {
                 getProducts();
                 button.setVisibility(View.GONE);
-                return false;
+                return true;
             }
         });
 
@@ -119,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
         arrayList.add(new Order(12,"Chocos 700g","",785,0,899));
         arrayList.add(new Order(13,"Chocos 1100g","",1155,0,1325));
         arrayList.add(new Order(14,"Variety Pack 109g","",90,0,100));
-        arrayList.add(new Order(15,"Chocos 22g","",17.50,0,20));
-        arrayList.add(new Order(16,"Chocos Moon & Star 22g","",17.50,0,20));
+        arrayList.add(new Order(15,"Chocos K-Pak 22g","",17.50,0,20));
+        arrayList.add(new Order(16,"Chocos Moon & Star K-Pak 22g","",17.50,0,20));
         arrayList.add(new Order(17,"Chocos Fills 250g","",435,0,499));
         arrayList.add(new Order(18,"Muesli Fruit & Nut 500g","",870,0,999));
         arrayList.add(new Order(19,"Muesli Fruit Magic 500g","",870,0,999));
@@ -145,16 +146,18 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        if (recyclerView.getItemDecorationCount()<1){
+            recyclerView.addItemDecoration(dividerItemDecoration);
+        }
         /*recyclerView.setHasFixedSize(true);*/
         recyclerView.setAdapter(myAdapter);
-        myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+        /**myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 arrayList.remove(position);
                 myAdapter.notifyItemRemoved(position);
             }
-        });
+        });*/
 
     }
 
