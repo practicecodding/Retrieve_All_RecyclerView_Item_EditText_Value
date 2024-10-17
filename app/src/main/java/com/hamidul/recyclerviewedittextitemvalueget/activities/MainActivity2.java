@@ -225,9 +225,11 @@ public class MainActivity2 extends AppCompatActivity {
 
                         EditText edDiscount = view.findViewById(R.id.edDiscount);
                         Button btnOk = view.findViewById(R.id.btnOk);
+                        TextView tv = view.findViewById(R.id.tvDiscount);
 
                         final AlertDialog dialog = builder.create();
 
+                        tv.setText(orders.get(getAdapterPosition()).getName()+"\nDiscount Amount");
                         if (orders.get(getAdapterPosition()).getDiscount()>0){
                             edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition()).getDiscount()));
                         }
