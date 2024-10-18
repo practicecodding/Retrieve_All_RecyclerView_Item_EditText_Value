@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -225,38 +227,8 @@ public class MainActivity2 extends AppCompatActivity {
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        View view = LayoutInflater.from(MainActivity2.this).inflate(R.layout.discount_dialog,null);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
-                        builder.setView(view);
 
-                        EditText edDiscount = view.findViewById(R.id.edDiscount);
-                        Button btnOk = view.findViewById(R.id.btnOk);
-                        TextView tv = view.findViewById(R.id.tvDiscount);
-
-                        final AlertDialog dialog = builder.create();
-
-                        tv.setText(orders.get(getAdapterPosition()).getName()+"\nDiscount Amount");
-                        if (orders.get(getAdapterPosition()).getDiscount()>0){
-                            edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition()).getDiscount()));
-                        }
-
-                        btnOk.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String discount = edDiscount.getText().toString();
-                                if (discount.isEmpty()){
-                                    orders.get(getAdapterPosition()).setDiscount(0);
-                                }
-                                else {
-                                    orders.get(getAdapterPosition()).setDiscount(Double.parseDouble(discount));
-                                }
-                                notifyDataSetChanged();
-                                upDatePrice();
-                                dialog.cancel();
-                            }
-                        });
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                        dialog.show();
+                        discountDialogBottom(getAdapterPosition());
 
                         return false;
                     }
@@ -332,5 +304,99 @@ public class MainActivity2 extends AppCompatActivity {
         itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
+    //************************************************************************************
+
+    void discountDialogBottom(int getAdapterPosition){
+        final Dialog dialog = new Dialog(MainActivity2.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_layout);
+
+        TextView tvDiscount = dialog.findViewById(R.id.tvDiscount);
+        EditText edDiscount = dialog.findViewById(R.id.edDiscount);
+        Button btnAdd = dialog.findViewById(R.id.btnAdd);
+
+        tvDiscount.setText(orders.get(getAdapterPosition).getName()+"\nDiscount Amount");
+
+        if (orders.get(getAdapterPosition).getDiscount()>0){
+            edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition).getDiscount()));
+        }
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String discount = edDiscount.getText().toString();
+
+                if (discount.isEmpty()){
+                    orders.get(getAdapterPosition).setDiscount(0);
+                    myAdapter.notifyDataSetChanged();
+                    upDatePrice();
+                    dialog.cancel();
+                }
+                else {
+                    if (Double.parseDouble(orders.get(getAdapterPosition).getQuantity())*orders.get(getAdapterPosition).getTp()<=Double.parseDouble(discount)){
+                        setToast("Wrong Amount");
+                    }
+                    else {
+                        orders.get(getAdapterPosition).setDiscount(Double.parseDouble(discount));
+                        myAdapter.notifyDataSetChanged();
+                        upDatePrice();
+                        dialog.cancel();
+                    }
+                }
+
+
+
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    //************************************************************************************
+
+    void discountDialogCenter(int getAdapterPosition){
+        View view = LayoutInflater.from(MainActivity2.this).inflate(R.layout.discount_dialog,null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity2.this);
+        builder.setView(view);
+        EditText edDiscount = view.findViewById(R.id.edDiscount);
+        Button btnOk = view.findViewById(R.id.btnOk);
+        TextView tv = view.findViewById(R.id.tvDiscount);
+
+        final AlertDialog dialog = builder.create();
+
+        tv.setText(orders.get(getAdapterPosition).getName()+"\nDiscount Amount");
+
+        if (orders.get(getAdapterPosition).getDiscount()>0){
+            edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition).getDiscount()));
+        }
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String discount = edDiscount.getText().toString();
+                if (discount.isEmpty()){
+                    orders.get(getAdapterPosition).setDiscount(0);
+                }
+                else {
+                    orders.get(getAdapterPosition).setDiscount(Double.parseDouble(discount));
+                }
+                myAdapter.notifyDataSetChanged();
+                upDatePrice();
+                dialog.cancel();
+
+            }
+        });
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    //************************************************************************************
 
 }
