@@ -13,25 +13,50 @@
         android:layout_height="match_parent"
         >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViw"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:layout_above="@id/button"
-        />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViw"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            android:layout_above="@id/cardView"
+            android:focusable="false"
+            />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:visibility="gone"
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Purchase"
-        android:background="@drawable/custom_button"
-        android:textColor="@drawable/custom_tc"
-        android:layout_alignParentBottom="true"
-        android:enabled="false"
-        />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:elevation="3dp"
+            app:cardElevation="3dp"
+            android:layout_alignParentBottom="true"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:visibility="visible"
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Purchase"
+                    android:background="@drawable/custom_button"
+                    android:textColor="@drawable/custom_tc"
+
+                    android:enabled="false"
+                    />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
 
     </RelativeLayout>
 

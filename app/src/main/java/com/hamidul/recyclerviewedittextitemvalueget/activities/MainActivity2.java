@@ -1,5 +1,6 @@
 package com.hamidul.recyclerviewedittextitemvalueget.activities;
 
+import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -107,12 +108,12 @@ public class MainActivity2 extends AppCompatActivity {
                         double totalTp = totalKelloggTp+totalPringlesTp;
                         double totalDp = totalTp/1.05;
                         if (totalDp%1==0){
-                            tvNetAmount.setText(String.format("%.0f",totalDp));
+                            tvNetAmount.setText(String.format("%,.0f",totalDp));
                         }
                         else {
-                            tvNetAmount.setText(String.format("%.2f",totalDp));
+                            tvNetAmount.setText(String.format("%,.2f",totalDp));
                         }
-                        tvNetAmountName.setText("Total Amount");
+                        tvNetAmountName.setText("Total DP Amount");
                         dialog.cancel();
                     }
                 });
@@ -142,12 +143,12 @@ public class MainActivity2 extends AppCompatActivity {
                         double totalPringlesTp = sumPringles/1.12;
                         double totalTp = totalKelloggTp+totalPringlesTp;
                         if (totalTp%1==0){
-                            tvNetAmount.setText(String.format("%.0f",totalTp));
+                            tvNetAmount.setText(String.format("%,.0f",totalTp));
                         }
                         else {
-                            tvNetAmount.setText(String.format("%.2f",totalTp));
+                            tvNetAmount.setText(String.format("%,.2f",totalTp));
                         }
-                        tvNetAmountName.setText("Total Amount");
+                        tvNetAmountName.setText("Total TP Amount");
                         dialog.cancel();
                     }
                 });
@@ -191,7 +192,7 @@ public class MainActivity2 extends AppCompatActivity {
         public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
 
             holder.productName.setText(orders.get(position).getName());
-            holder.tvDiscount.setText(String.format("%.0f",orders.get(position).getDiscount()));
+            holder.tvDiscount.setText(String.format("%,.0f",orders.get(position).getDiscount()));
             if (orders.get(position).getTp()%1==0){
                 holder.multiply.setText( orders.get(position).getQuantity()+" * "+String.format("%.0f",orders.get(position).getTp()) );
             }
@@ -199,10 +200,10 @@ public class MainActivity2 extends AppCompatActivity {
                 holder.multiply.setText( orders.get(position).getQuantity()+" * "+String.format("%.2f",orders.get(position).getTp()) );
             }
             if ( orders.get(position).getTp()*Double.parseDouble(orders.get(position).getQuantity())%1==0){
-                holder.tvUnit.setText(String.format("%.0f",Double.parseDouble(orders.get(position).getQuantity())*orders.get(position).getTp()));
+                holder.tvUnit.setText(String.format("%,.0f",Double.parseDouble(orders.get(position).getQuantity())*orders.get(position).getTp()));
             }
             else {
-                holder.tvUnit.setText(String.format("%.2f",Double.parseDouble(orders.get(position).getQuantity())*orders.get(position).getTp()));
+                holder.tvUnit.setText(String.format("%,.2f",Double.parseDouble(orders.get(position).getQuantity())*orders.get(position).getTp()));
             }
 
         }
@@ -277,25 +278,25 @@ public class MainActivity2 extends AppCompatActivity {
             sum = sum + product;
             sumDiscount = sumDiscount+discount;
         }
-        tvDiscountAmount.setText(String.format("%.0f",sumDiscount));
+        tvDiscountAmount.setText(String.format("%,.0f",sumDiscount));
         if (sum%1==0){
-            tvTotalAmount.setText(String.format("%.0f",sum));
-            tvNetAmount.setText(String.format("%.0f",sum-sumDiscount));
+            tvTotalAmount.setText(String.format("%,.0f",sum));
+            tvNetAmount.setText(String.format("%,.0f",sum-sumDiscount));
         }
         else {
-            tvTotalAmount.setText(String.format("%.2f",sum));
-            tvNetAmount.setText(String.format("%.2f",sum-sumDiscount));
+            tvTotalAmount.setText(String.format("%,.2f",sum));
+            tvNetAmount.setText(String.format("%,.2f",sum-sumDiscount));
         }
     }
 
     void setToast(String message){
         if (toast!=null) toast.cancel();
-        toast = Toast.makeText(MainActivity2.this,message,Toast.LENGTH_LONG);
+        toast = Toast.makeText(MainActivity2.this,message,Toast.LENGTH_SHORT);
         toast.show();
     }
 
     void swipe(){
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 /**arrayList.remove(viewHolder.getAdapterPosition());
@@ -311,6 +312,9 @@ public class MainActivity2 extends AppCompatActivity {
                 orders.get(viewHolder.getAdapterPosition()).setDiscount(0);
                 orders.remove(viewHolder.getAdapterPosition());
                 upDatePrice();
+                discountAmountLayout.setVisibility(View.VISIBLE);
+                totalAmountLayout.setVisibility(View.VISIBLE);
+                tvNetAmountName.setText("Net Amount");
                 myAdapter.notifyItemRemoved(viewHolder.getAdapterPosition());
 
                 if (orders.isEmpty()){

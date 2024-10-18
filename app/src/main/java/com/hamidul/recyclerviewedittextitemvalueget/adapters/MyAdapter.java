@@ -27,7 +27,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
     ArrayList<Order> arrayList;
     Context context;
     OnItemClickListener onItemClickListener;
-    LinearLayoutManager layoutManager;
 
     public MyAdapter(Context context, ArrayList<Order> arrayList) {
         this.context = context;

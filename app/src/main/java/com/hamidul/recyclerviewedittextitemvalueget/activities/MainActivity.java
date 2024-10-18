@@ -1,11 +1,16 @@
 package com.hamidul.recyclerviewedittextitemvalueget.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +26,7 @@ import com.hamidul.recyclerviewedittextitemvalueget.adapters.MyAdapter;
 import com.hamidul.recyclerviewedittextitemvalueget.model.Order;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
     Toast toast;
     public static int firstVisiblePosition;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.toolbar_title_layout);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerViw);
@@ -46,6 +53,42 @@ public class MainActivity extends AppCompatActivity {
         getProducts();
 
         firstVisiblePosition = 0;
+
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                View focusedView = getCurrentFocus();
+                if (focusedView instanceof EditText) {
+                    focusedView.clearFocus();
+                    hideKeyboard(v);
+                }
+                return false;
+            }
+        });
+        
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            // To debounce frequent scroll events
+//            private boolean isScrolling = false;
+//
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//
+//                // Check if the scrolling has stopped
+//                if (newState == RecyclerView.SCROLL_STATE_IDLE && isScrolling) {
+//                    // Scrolling has stopped, now focus the first visible EditText
+//                    focusFirstVisibleEditText(recyclerView);
+//                    isScrolling = false;  // Reset scrolling flag
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                isScrolling = true;  // Mark as scrolling in progress
+//            }
+//        });
+
 
         getSupportActionBar().getCustomView().setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -155,8 +198,9 @@ public class MainActivity extends AppCompatActivity {
         myAdapter = new MyAdapter(MainActivity.this,arrayList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
+        /**linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);*/
         recyclerView.setLayoutManager(linearLayoutManager);
-        if (recyclerView.getItemDecorationCount()<1){
+        /*if (recyclerView.getItemDecorationCount()<1){
             recyclerView.addItemDecoration(dividerItemDecoration);
         }
         /*recyclerView.setHasFixedSize(true);*/
@@ -175,19 +219,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void setToast(String message){
         if (toast!=null) toast.cancel();
-        toast = Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG);
+        toast = Toast.makeText(MainActivity.this,message,Toast.LENGTH_SHORT);
         toast.show();
     }
 
     @Override
     protected void onResume() {
-        myAdapter = new MyAdapter(MainActivity.this,arrayList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
-        recyclerView.setLayoutManager(linearLayoutManager);
-        if (recyclerView.getItemDecorationCount()<1){
-            recyclerView.addItemDecoration(dividerItemDecoration);
-        }
+//        myAdapter = new MyAdapter(MainActivity.this,arrayList);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,linearLayoutManager.getOrientation());
+//        recyclerView.setLayoutManager(linearLayoutManager);
+//        if (recyclerView.getItemDecorationCount()<1){
+//            recyclerView.addItemDecoration(dividerItemDecoration);
+//        }
         /*recyclerView.setHasFixedSize(true);*/
         recyclerView.setAdapter(myAdapter);
         recyclerView.scrollToPosition(firstVisiblePosition);
@@ -206,6 +250,13 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.button.setEnabled(false);
                 MainActivity.button.setVisibility(View.GONE);}
         }
+    }
+
+    //=========================****************************************************===============================================
+
+    public void hideKeyboard(View view) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
 }
