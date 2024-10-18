@@ -264,7 +264,8 @@ public class MainActivity extends AppCompatActivity {
             }
             else {
                 MainActivity.button.setEnabled(false);
-                MainActivity.button.setVisibility(View.GONE);}
+                MainActivity.button.setVisibility(View.GONE);
+            }
         }
     }
 
