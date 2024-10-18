@@ -25,12 +25,14 @@ import java.util.ArrayList;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
 
     ArrayList<Order> arrayList;
+    ArrayList<Order> filteredList;
     Context context;
     OnItemClickListener onItemClickListener;
 
     public MyAdapter(Context context, ArrayList<Order> arrayList) {
         this.context = context;
         this.arrayList = arrayList;
+        this.filteredList = new ArrayList<>(arrayList);
     }
 
     public interface OnItemClickListener{
@@ -50,7 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
-        holder.productName.setText(arrayList.get(position).getName());
+        holder.productName.setText(filteredList.get(position).getName());
 
         /*holder.setIsRecyclable(false);
         holder.edUnit.setText(arrayList.get(position).getEditTextValue());
@@ -75,7 +77,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
             holder.edUnit.removeTextChangedListener((TextWatcher) holder.edUnit.getTag());
         }
 
-        holder.edUnit.setText(arrayList.get(position).getQuantity());
+        holder.edUnit.setText(filteredList.get(position).getQuantity());
 
         TextWatcher watcher = new TextWatcher() {
             @Override
@@ -86,10 +88,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                arrayList.get(position).setQuantity(charSequence.toString());
+                filteredList.get(position).setQuantity(charSequence.toString());
                 /**MainActivity2.arrayList = arrayList;*/
 
-                for (Order item : arrayList){
+                for (Order item : filteredList){
                     if (!item.getQuantity().isEmpty()){
                         MainActivity.button.setEnabled(true);
                         MainActivity.button.setVisibility(View.VISIBLE);
@@ -116,7 +118,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return filteredList.size();
     }
 
     public class myViewHolder extends RecyclerView.ViewHolder{
@@ -154,5 +156,27 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
         }
 
     }
+
+    //**********************************************************************************************
+
+    public void filter(String query) {
+        query = query.toLowerCase();
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(arrayList);
+        }
+        else {
+            for (Order item : arrayList) {
+                // Implement your search logic here
+                // For example, search in specific keys within the HashMap
+                if (item.getName().toLowerCase().contains(query)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
+    //**********************************************************************************************
 
 }

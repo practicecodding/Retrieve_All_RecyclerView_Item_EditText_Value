@@ -8,6 +8,23 @@
     android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
+    <androidx.appcompat.widget.SearchView
+        android:theme="@style/customCursor"
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        app:iconifiedByDefault="false"
+        app:searchIcon="@null"
+        app:queryBackground="@null"
+        app:queryHint="Search"
+        android:background="@drawable/custom_search"
+        app:closeIcon="@drawable/baseline_close_24"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

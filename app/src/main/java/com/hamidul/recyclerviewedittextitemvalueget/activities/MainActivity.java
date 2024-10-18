@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     boolean notIsEmpty;
     Toast toast;
     public static int firstVisiblePosition;
+    SearchView searchView;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -49,8 +51,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerViw);
         button = findViewById(R.id.button);
+        searchView = findViewById(R.id.searchView);
 
         getProducts();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                myAdapter.filter(newText);
+                return true;
+            }
+        });
 
         firstVisiblePosition = 0;
 
