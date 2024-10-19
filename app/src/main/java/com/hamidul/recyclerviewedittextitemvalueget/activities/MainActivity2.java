@@ -1,11 +1,19 @@
 package com.hamidul.recyclerviewedittextitemvalueget.activities;
 
+import android.Manifest;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.pdf.PdfDocument;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +28,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +38,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hamidul.recyclerviewedittextitemvalueget.R;
 import com.hamidul.recyclerviewedittextitemvalueget.model.Order;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity2 extends AppCompatActivity {
 
@@ -41,6 +55,7 @@ public class MainActivity2 extends AppCompatActivity {
     double sum,sumKellogg,sumPringles,sumDiscount;
     Toast toast;
     ItemTouchHelper itemTouchHelper;
+    final static int REQUEST_CODE_STORAGE_PERMISSION = 1235;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +198,8 @@ public class MainActivity2 extends AppCompatActivity {
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.myViewHolder>{
 
+        int doubleClick = 0;
+
         @NonNull
         @Override
         public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -234,6 +251,26 @@ public class MainActivity2 extends AppCompatActivity {
                     }
                 });
 
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        doubleClick++;
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                doubleClick = 0;
+                            }
+                        },300);
+
+                        if (doubleClick==2){
+                            discountDialogCenter(getAdapterPosition());
+                        }
+
+
+                    }
+                });
+
             }
         }
 
@@ -268,7 +305,7 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     void swipe(){
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 /**arrayList.remove(viewHolder.getAdapterPosition());
@@ -316,7 +353,7 @@ public class MainActivity2 extends AppCompatActivity {
         EditText edDiscount = dialog.findViewById(R.id.edDiscount);
         Button btnAdd = dialog.findViewById(R.id.btnAdd);
 
-        tvDiscount.setText(orders.get(getAdapterPosition).getName()+"\nDiscount Amount");
+        tvDiscount.setText(orders.get(getAdapterPosition).getName()+"\nTotal Discount");
 
         if (orders.get(getAdapterPosition).getDiscount()>0){
             edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition).getDiscount()));
@@ -370,10 +407,17 @@ public class MainActivity2 extends AppCompatActivity {
 
         final AlertDialog dialog = builder.create();
 
-        tv.setText(orders.get(getAdapterPosition).getName()+"\nDiscount Amount");
+        tv.setText(orders.get(getAdapterPosition).getName()+"\nDiscount Per Pcs");
 
         if (orders.get(getAdapterPosition).getDiscount()>0){
-            edDiscount.setText(String.format("%.0f",orders.get(getAdapterPosition).getDiscount()));
+            int Quantity = Integer.parseInt(orders.get(getAdapterPosition).getQuantity());
+            double Discount = orders.get(getAdapterPosition).getDiscount();
+            if (Discount/Quantity%1==0){
+                edDiscount.setText( String.format("%.0f",Discount/Quantity));
+            }
+            else {
+                edDiscount.setText( String.format("%.2f",Discount/Quantity));
+            }
         }
 
         btnOk.setOnClickListener(new View.OnClickListener() {
@@ -385,7 +429,7 @@ public class MainActivity2 extends AppCompatActivity {
                     orders.get(getAdapterPosition).setDiscount(0);
                 }
                 else {
-                    orders.get(getAdapterPosition).setDiscount(Double.parseDouble(discount));
+                    orders.get(getAdapterPosition).setDiscount(Double.parseDouble(discount)*Integer.parseInt(orders.get(getAdapterPosition).getQuantity()));
                 }
                 myAdapter.notifyDataSetChanged();
                 upDatePrice();
@@ -398,5 +442,56 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     //************************************************************************************
+
+    private void convertXMLtoPDF() {
+
+        View view = LayoutInflater.from(MainActivity2.this).inflate(R.layout.activity_main2,null);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.R){
+            this.getDisplay().getRealMetrics(displayMetrics);
+        }else {
+            this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        }
+
+        view.measure(View.MeasureSpec.makeMeasureSpec(displayMetrics.widthPixels, View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, View.MeasureSpec.EXACTLY));
+
+        view.layout(0,0, displayMetrics.widthPixels, displayMetrics.widthPixels);
+
+        PdfDocument document = new PdfDocument();
+        int viewWidth = view.getMeasuredWidth();
+        int viewHeight = view.getMeasuredHeight();
+
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth,viewHeight,1).create();
+        PdfDocument.Page page = document.startPage(pageInfo);
+
+        Canvas canvas = page.getCanvas();
+        view.draw(canvas);
+
+        document.finishPage(page);
+
+        // Get app-specific directory in external storage
+        File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        if (directory != null && !directory.exists()) {
+            directory.mkdirs();  // Create directory if it doesn't exist
+        }
+
+        // Define the file path
+        String targetPdf = directory.getPath() + "/XMLtoPDF.pdf";
+        File filePath = new File(targetPdf);
+
+        try {
+            document.writeTo(new FileOutputStream(filePath));
+            setToast("PDF created successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error in PDF creation: " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        // Close the document
+        document.close();
+
+    }
 
 }

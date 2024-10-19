@@ -66,7 +66,6 @@
                     android:text="Purchase"
                     android:background="@drawable/custom_button"
                     android:textColor="@drawable/custom_tc"
-
                     android:enabled="false"
                     />
 
