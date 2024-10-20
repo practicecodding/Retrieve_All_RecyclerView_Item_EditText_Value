@@ -316,11 +316,13 @@ public class MainActivity2 extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                //Toast.makeText(MainActivity2.this, orders.get(viewHolder.getAdapterPosition()).getName()+" Successfully Deleted", Toast.LENGTH_SHORT).show();
+
                 setToast(orders.get(viewHolder.getAdapterPosition()).getName()+" Successfully Deleted");
                 orders.get(viewHolder.getAdapterPosition()).setQuantity("");
                 orders.get(viewHolder.getAdapterPosition()).setDiscount(0);
-                dialog.cancel();
+                if (dialog!=null){
+                    dialog.cancel();
+                }
                 orders.remove(viewHolder.getAdapterPosition());
                 upDatePrice();
                 discountAmountLayout.setVisibility(View.VISIBLE);
