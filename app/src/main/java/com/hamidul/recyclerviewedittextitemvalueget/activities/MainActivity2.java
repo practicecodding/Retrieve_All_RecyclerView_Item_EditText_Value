@@ -56,6 +56,7 @@ public class MainActivity2 extends AppCompatActivity {
     Toast toast;
     ItemTouchHelper itemTouchHelper;
     final static int REQUEST_CODE_STORAGE_PERMISSION = 1235;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,7 +262,7 @@ public class MainActivity2 extends AppCompatActivity {
                             public void run() {
                                 doubleClick = 0;
                             }
-                        },300);
+                        },500);
 
                         if (doubleClick==2){
                             discountDialogCenter(getAdapterPosition());
@@ -319,6 +320,7 @@ public class MainActivity2 extends AppCompatActivity {
                 setToast(orders.get(viewHolder.getAdapterPosition()).getName()+" Successfully Deleted");
                 orders.get(viewHolder.getAdapterPosition()).setQuantity("");
                 orders.get(viewHolder.getAdapterPosition()).setDiscount(0);
+                dialog.cancel();
                 orders.remove(viewHolder.getAdapterPosition());
                 upDatePrice();
                 discountAmountLayout.setVisibility(View.VISIBLE);
@@ -345,7 +347,7 @@ public class MainActivity2 extends AppCompatActivity {
     //************************************************************************************
 
     void discountDialogBottom(int getAdapterPosition){
-        final Dialog dialog = new Dialog(MainActivity2.this);
+        dialog = new Dialog(MainActivity2.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_layout);
 
@@ -405,7 +407,7 @@ public class MainActivity2 extends AppCompatActivity {
         Button btnOk = view.findViewById(R.id.btnOk);
         TextView tv = view.findViewById(R.id.tvDiscount);
 
-        final AlertDialog dialog = builder.create();
+        final AlertDialog alertDialog = builder.create();
 
         tv.setText(orders.get(getAdapterPosition).getName()+"\nDiscount Per Pcs");
 
@@ -427,71 +429,33 @@ public class MainActivity2 extends AppCompatActivity {
                 String discount = edDiscount.getText().toString();
                 if (discount.isEmpty()){
                     orders.get(getAdapterPosition).setDiscount(0);
+                    myAdapter.notifyDataSetChanged();
+                    upDatePrice();
+                    alertDialog.cancel();
                 }
                 else {
-                    orders.get(getAdapterPosition).setDiscount(Double.parseDouble(discount)*Integer.parseInt(orders.get(getAdapterPosition).getQuantity()));
+
+                    if (orders.get(getAdapterPosition).getTp()>Double.parseDouble(discount)){
+                        orders.get(getAdapterPosition).setDiscount(Double.parseDouble(discount)*Integer.parseInt(orders.get(getAdapterPosition).getQuantity()));
+                        myAdapter.notifyDataSetChanged();
+                        upDatePrice();
+                        alertDialog.cancel();
+                    }
+                    else {
+                        setToast("Wrong Amount");
+                    }
+
                 }
-                myAdapter.notifyDataSetChanged();
-                upDatePrice();
-                dialog.cancel();
+
 
             }
         });
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.show();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show();
     }
 
     //************************************************************************************
 
-    private void convertXMLtoPDF() {
 
-        View view = LayoutInflater.from(MainActivity2.this).inflate(R.layout.activity_main2,null);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-
-        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.R){
-            this.getDisplay().getRealMetrics(displayMetrics);
-        }else {
-            this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        }
-
-        view.measure(View.MeasureSpec.makeMeasureSpec(displayMetrics.widthPixels, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(displayMetrics.heightPixels, View.MeasureSpec.EXACTLY));
-
-        view.layout(0,0, displayMetrics.widthPixels, displayMetrics.widthPixels);
-
-        PdfDocument document = new PdfDocument();
-        int viewWidth = view.getMeasuredWidth();
-        int viewHeight = view.getMeasuredHeight();
-
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth,viewHeight,1).create();
-        PdfDocument.Page page = document.startPage(pageInfo);
-
-        Canvas canvas = page.getCanvas();
-        view.draw(canvas);
-
-        document.finishPage(page);
-
-        // Get app-specific directory in external storage
-        File directory = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        if (directory != null && !directory.exists()) {
-            directory.mkdirs();  // Create directory if it doesn't exist
-        }
-
-        // Define the file path
-        String targetPdf = directory.getPath() + "/XMLtoPDF.pdf";
-        File filePath = new File(targetPdf);
-
-        try {
-            document.writeTo(new FileOutputStream(filePath));
-            setToast("PDF created successfully!");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error in PDF creation: " + e.toString(), Toast.LENGTH_SHORT).show();
-        }
-
-        // Close the document
-        document.close();
-
-    }
 
 }
